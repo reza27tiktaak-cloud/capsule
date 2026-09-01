@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کارت ویزیت {{ user['name'] }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Vazir&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazir', Tahoma, sans-serif; }
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== کلاس‌های بک‌گراند ===== */
+        .bg-1 { background: linear-gradient(145deg, #0f0c29, #302b63, #24243e); }
+        .bg-2 { background: linear-gradient(145deg, #1a1a2e, #16213e, #0f3460); }
+        .bg-3 { background: linear-gradient(145deg, #0a0a0a, #1a1a2e, #2d1b4e); }
+        .bg-4 { background: linear-gradient(145deg, #1a1a2e, #2d1b4e, #4a1942); }
+        .bg-5 { background: linear-gradient(145deg, #0a0a0a, #1a1a2e, #1a2a3a); }
+        .bg-6 { background: linear-gradient(145deg, #1a1a2e, #0a1a2e, #0a0a1a); }
+        .bg-7 { background: linear-gradient(145deg, #2d1b4e, #1a1a2e, #0f0c29); }
+        .bg-8 { background: linear-gradient(145deg, #16213e, #1a1a2e, #0f3460); }
+        .bg-9 { background: linear-gradient(145deg, #1a1a2e, #2d1b4e, #1a2a3a); }
+        .bg-10 { background: linear-gradient(145deg, #0a0a0a, #1a1a2e, #16213e); }
+        .bg-11 { background: linear-gradient(145deg, #1a1a2e, #0f0c29, #2d1b4e); }
+        .bg-12 { background: linear-gradient(145deg, #0a0a0a, #2d1b4e, #1a1a2e); }
+        .bg-13 { background: linear-gradient(145deg, #1a2a3a, #0a1a2e, #0a0a1a); }
+        .bg-14 { background: linear-gradient(145deg, #2d1b4e, #1a2a3a, #0f0c29); }
+        .bg-15 { background: linear-gradient(145deg, #0f3460, #16213e, #1a1a2e); }
+        .bg-16 { background: linear-gradient(145deg, #1a1a2e, #0f3460, #2d1b4e); }
+        .bg-17 { background: linear-gradient(145deg, #0a0a0a, #1a2a3a, #2d1b4e); }
+        .bg-18 { background: linear-gradient(145deg, #1a1a2e, #0a0a1a, #0f0c29); }
+        .bg-19 { background: linear-gradient(145deg, #2d1b4e, #0f3460, #1a1a2e); }
+        .bg-20 { background: linear-gradient(145deg, #0a0a0a, #16213e, #1a2a3a); }
+
+        .card-wrapper {
+            max-width: 450px;
+            width: 100%;
+            animation: cardEntrance 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: perspective(800px) rotateX(15deg) translateY(60px) scale(0.9);
+        }
+        @keyframes cardEntrance {
+            0% { opacity: 0; transform: perspective(800px) rotateX(15deg) translateY(60px) scale(0.9); }
+            100% { opacity: 1; transform: perspective(800px) rotateX(0deg) translateY(0) scale(1); }
+        }
+        .card {
+            border-radius: 30px;
+            padding: 40px 28px;
+            text-align: center;
+            color: #e8e0d0;
+            border: 1px solid #d4af37;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+        .card > * {
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        .card .avatar { animation-delay: 0.4s; }
+        .card h1 { animation-delay: 0.6s; }
+        .card .job-title { animation-delay: 0.7s; }
+        .card .bio { animation-delay: 0.8s; }
+        .card .description { animation-delay: 0.9s; }
+        .card .info-list { animation-delay: 1.0s; }
+        .card .btn-group { animation-delay: 1.2s; }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 30px rgba(212,175,55,0.2);
+        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            font-size: 60px;
+            background: #1a1a1a;
+            color: #d4af37;
+        }
+        h1 { color: #d4af37; font-size: 26px; font-family: 'Playfair Display', serif; }
+        .job-title { color: #b8a88a; font-size: 15px; }
+        .bio { color: #c8bca8; font-size: 14px; line-height: 2; margin: 18px 0; }
+        .description { color: #a89880; font-size: 14px; margin: 10px 0; }
+        .info-list { display: flex; flex-direction: column; gap: 10px; margin: 25px 0; }
+        .info-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(212,175,55,0.05);
+            padding: 14px 18px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #e8e0d0;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212,175,55,0.1);
+        }
+        .info-item:hover {
+            background: rgba(212,175,55,0.12);
+            border-color: #d4af37;
+            transform: translateX(-5px);
+        }
+        .icon { font-size: 20px; width: 32px; text-align: center; color: #d4af37; }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; }
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37, #b8962e);
+            color: #0a0a0a;
+        }
+        .btn-gold:hover { transform: scale(1.02); }
+        .btn-glass {
+            background: rgba(212,175,55,0.05);
+            color: #d4af37;
+            border: 1px solid rgba(212,175,55,0.1);
+        }
+        .btn-glass:hover { background: rgba(212,175,55,0.1); transform: scale(1.02); }
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 20px auto;
+        }
+        @media (max-width: 480px) {
+            .card { padding: 30px 18px; }
+            .avatar { width: 100px; height: 100px; }
+            .info-item { padding: 12px 14px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card-wrapper">
+        <div class="card {{ user['bg_style'] or 'bg-1' }}">
+            <div class="avatar">
+                {% if user['logo'] %}
+                    <img src="/static/uploads/{{ user['logo'] }}" alt="لوگو">
+                {% else %}
+                    <span>👤</span>
+                {% endif %}
+            </div>
+            <h1>{{ user['name'] }}</h1>
+            <p class="job-title">{{ user['job_title'] or 'عنوان شغلی' }}</p>
+            <div class="divider"></div>
+            {% if user['bio'] %}<p class="bio">{{ user['bio'] }}</p>{% endif %}
+            <p class="description">{{ user['description'] or 'توضیحات' }}</p>
+            <div class="info-list">
+                {% if user['phone'] %}<a href="tel:{{ user['phone'] }}" class="info-item"><span class="icon">📞</span><span>{{ user['phone'] }}</span></a>{% endif %}
+                {% if user['email_show'] %}<a href="mailto:{{ user['email_show'] }}" class="info-item"><span class="icon">✉️</span><span>{{ user['email_show'] }}</span></a>{% endif %}
+                {% if user['website'] %}<a href="{{ user['website'] }}" target="_blank" class="info-item"><span class="icon">🌐</span><span>{{ user['website'] }}</span></a>{% endif %}
+                {% if user['whatsapp'] %}<a href="https://wa.me/{{ user['whatsapp'] }}" target="_blank" class="info-item"><span class="icon">💬</span><span>واتساپ</span></a>{% endif %}
+                {% if user['telegram'] %}<a href="https://t.me/{{ user['telegram'] }}" target="_blank" class="info-item"><span class="icon">✈️</span><span>تلگرام</span></a>{% endif %}
+                {% if user['instagram'] %}<a href="https://instagram.com/{{ user['instagram'] }}" target="_blank" class="info-item"><span class="icon">📷</span><span>اینستاگرام</span></a>{% endif %}
+                {% if user['address'] %}<a href="https://www.google.com/maps/search/?api=1&query={{ user['address'] | urlencode }}" target="_blank" class="info-item"><span class="icon">📍</span><span>{{ user['address'] }}</span></a>{% endif %}
+                {% if user['location'] %}<a href="{{ user['location'] }}" target="_blank" class="info-item"><span class="icon">🗺️</span><span>مشاهده روی نقشه</span></a>{% endif %}
+            </div>
+            <div class="btn-group">
+                <a href="/gallery/{{ user['id'] }}" class="btn btn-glass" target="_blank">🖼️ گالری تصاویر</a>
+                <a href="/qr/{{ user['id'] }}" class="btn btn-glass" target="_blank">📱 کد QR کارت</a>
+                <a href="/download_vcard/{{ user['id'] }}" class="btn btn-gold">💾 ذخیره مخاطب</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

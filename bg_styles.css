@@ -1,0 +1,22 @@
+/* کتابخانه بک‌گراندهای لوکس برای کارت ویزیت */
+
+.bg-1 { background: linear-gradient(145deg, #0f0c29, #302b63, #24243e); }
+.bg-2 { background: linear-gradient(145deg, #1a1a2e, #16213e, #0f3460); }
+.bg-3 { background: linear-gradient(145deg, #0a0a0a, #1a1a2e, #2d1b4e); }
+.bg-4 { background: linear-gradient(145deg, #1a1a2e, #2d1b4e, #4a1942); }
+.bg-5 { background: linear-gradient(145deg, #0a0a0a, #1a1a2e, #1a2a3a); }
+.bg-6 { background: linear-gradient(145deg, #1a1a2e, #0a1a2e, #0a0a1a); }
+.bg-7 { background: linear-gradient(145deg, #2d1b4e, #1a1a2e, #0f0c29); }
+.bg-8 { background: linear-gradient(145deg, #16213e, #1a1a2e, #0f3460); }
+.bg-9 { background: linear-gradient(145deg, #1a1a2e, #2d1b4e, #1a2a3a); }
+.bg-10 { background: linear-gradient(145deg, #0a0a0a, #1a1a2e, #16213e); }
+.bg-11 { background: linear-gradient(145deg, #1a1a2e, #0f0c29, #2d1b4e); }
+.bg-12 { background: linear-gradient(145deg, #0a0a0a, #2d1b4e, #1a1a2e); }
+.bg-13 { background: linear-gradient(145deg, #1a2a3a, #0a1a2e, #0a0a1a); }
+.bg-14 { background: linear-gradient(145deg, #2d1b4e, #1a2a3a, #0f0c29); }
+.bg-15 { background: linear-gradient(145deg, #0f3460, #16213e, #1a1a2e); }
+.bg-16 { background: linear-gradient(145deg, #1a1a2e, #0f3460, #2d1b4e); }
+.bg-17 { background: linear-gradient(145deg, #0a0a0a, #1a2a3a, #2d1b4e); }
+.bg-18 { background: linear-gradient(145deg, #1a1a2e, #0a0a1a, #0f0c29); }
+.bg-19 { background: linear-gradient(145deg, #2d1b4e, #0f3460, #1a1a2e); }
+.bg-20 { background: linear-gradient(145deg, #0a0a0a, #16213e, #1a2a3a); }
