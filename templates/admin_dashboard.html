@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد مدیریت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Vazir&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Vazir', Tahoma, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: #d4af37;
+        }
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Vazir', Tahoma, sans-serif;
+            display: inline-block;
+        }
+        .btn-gold { background: linear-gradient(135deg, #d4af37, #b8962e); color: #0a0a0a; }
+        .btn-gold:hover { transform: scale(1.02); }
+        .btn-glass { background: rgba(255,255,255,0.03); color: white; border: 1px solid rgba(255,255,255,0.06); }
+        .btn-glass:hover { background: rgba(255,255,255,0.06); }
+        .btn-red { background: linear-gradient(135deg, #eb3349, #f45c43); color: white; }
+        .btn-red:hover { transform: scale(1.02); }
+        .btn-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; }
+        .btn-blue:hover { transform: scale(1.02); }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 20px;
+            padding: 22px 16px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #d4af37;
+            font-family: 'Playfair Display', serif;
+        }
+        .stat-label { color: rgba(255,255,255,0.3); font-size: 13px; margin-top: 5px; }
+        .stat-card.pending .stat-number { color: #f59e0b; }
+        .stat-card.approved .stat-number { color: #10b981; }
+        .stat-card.views .stat-number { color: #4facfe; }
+        .stat-card.reviews .stat-number { color: #ec4899; }
+
+        .section-title {
+            font-size: 18px;
+            color: rgba(255,255,255,0.6);
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .quick-actions .btn {
+            text-align: center;
+            padding: 16px;
+            font-size: 15px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255,255,255,0.06);
+            font-size: 11px;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255,255,255,0.02);
+            padding-top: 25px;
+        }
+        .flash-message {
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .flash-success { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); color: #10b981; }
+        .flash-danger { background: rgba(235, 51, 73, 0.08); border: 1px solid rgba(235, 51, 73, 0.15); color: #eb3349; }
+        @media (max-width: 480px) {
+            .header { flex-direction: column; text-align: center; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-number { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">MAHDAVI</div>
+            <div class="header-actions">
+                <a href="/" class="btn btn-glass">🏠 سایت</a>
+                <a href="/logout" class="btn btn-red">🚪 خروج</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_users }}</div>
+                <div class="stat-label">👥 کل کاربران</div>
+            </div>
+            <div class="stat-card pending">
+                <div class="stat-number">{{ pending_users }}</div>
+                <div class="stat-label">⏳ در انتظار تایید</div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-number">{{ approved_users }}</div>
+                <div class="stat-label">✅ تایید شده</div>
+            </div>
+            <div class="stat-card views">
+                <div class="stat-number">{{ total_views }}</div>
+                <div class="stat-label">👁️ بازدید کل</div>
+            </div>
+            <div class="stat-card reviews">
+                <div class="stat-number">{{ total_reviews }}</div>
+                <div class="stat-label">💬 نظرات</div>
+            </div>
+        </div>
+
+        <div class="section-title">⚡ دسترسی سریع</div>
+        <div class="quick-actions">
+            <a href="/admin/users" class="btn btn-gold">👥 مدیریت کاربران</a>
+            <a href="/admin/reviews" class="btn btn-blue">💬 مدیریت نظرات</a>
+            <a href="/users" class="btn btn-glass" target="_blank">📇 مشاهده کارت‌ها</a>
+        </div>
+
+        <div class="footer">پنل مدیریت • کارت ویزیت هوشمند</div>
+    </div>
+</body>
+</html>

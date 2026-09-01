@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ویرایش پروفایل</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+    <style>
+        .form-group { margin-bottom: 15px; text-align: right; }
+        .form-group label { display: block; color: #aaa; font-size: 13px; margin-bottom: 5px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-family: 'Vazir', Tahoma, sans-serif;
+            backdrop-filter: blur(10px);
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+        .form-group textarea { min-height: 60px; resize: vertical; }
+        .btn-save {
+            background: linear-gradient(135deg, #d4af37, #b8962e);
+            color: #0f0c29;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        .btn-save:hover { transform: scale(1.02); }
+        .current-logo { color: #aaa; font-size: 12px; margin-top: 5px; }
+        .bg-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: 12px;
+            margin-top: 5px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .status-pending { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.08); }
+        .status-approved { background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.08); }
+        .status-rejected { background: rgba(235, 51, 73, 0.12); color: #eb3349; border: 1px solid rgba(235, 51, 73, 0.08); }
+        .info-text { color: rgba(255,255,255,0.2); font-size: 13px; text-align: center; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card">
+            <h2 style="text-align: center; color: #d4af37;">✏️ ویرایش پروفایل</h2>
+            
+            <!-- نمایش وضعیت کارت -->
+            <div style="text-align: center;">
+                {% if user['status'] == 'pending' %}
+                    <span class="status-badge status-pending">⏳ کارت در انتظار تایید</span>
+                {% elif user['status'] == 'approved' %}
+                    <span class="status-badge status-approved">✅ کارت تایید شده</span>
+                {% else %}
+                    <span class="status-badge status-rejected">❌ کارت رد شده</span>
+                {% endif %}
+                <p class="info-text">👁️ تعداد بازدید: {{ user['views'] or 0 }}</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>نام کامل</label>
+                    <input type="text" name="name" value="{{ user['name'] or '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label>عنوان شغلی</label>
+                    <input type="text" name="job_title" value="{{ user['job_title'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>بیوگرافی</label>
+                    <textarea name="bio">{{ user['bio'] or '' }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>توضیحات کوتاه</label>
+                    <textarea name="description">{{ user['description'] or '' }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>شماره تماس</label>
+                    <input type="text" name="phone" value="{{ user['phone'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>ایمیل (نمایش عمومی)</label>
+                    <input type="email" name="email_show" value="{{ user['email_show'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>وبسایت</label>
+                    <input type="url" name="website" value="{{ user['website'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>شماره واتساپ</label>
+                    <input type="text" name="whatsapp" value="{{ user['whatsapp'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>آیدی تلگرام (بدون @)</label>
+                    <input type="text" name="telegram" value="{{ user['telegram'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>آیدی اینستاگرام (بدون @)</label>
+                    <input type="text" name="instagram" value="{{ user['instagram'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>آدرس کامل</label>
+                    <input type="text" name="address" value="{{ user['address'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>لینک نقشه (Google Maps)</label>
+                    <input type="url" name="location" value="{{ user['location'] or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>آپلود لوگو جدید</label>
+                    <input type="file" name="logo" accept="image/*" style="color: white; padding: 8px;">
+                    {% if user['logo'] %}
+                        <div class="current-logo">لوگو فعلی: {{ user['logo'] }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label>انتخاب تم</label>
+                    <select name="theme">
+                        <option value="classic" {% if user['theme']=='classic' %}selected{% endif %}>کلاسیک</option>
+                        <option value="modern" {% if user['theme']=='modern' %}selected{% endif %}>مدرن</option>
+                        <option value="minimal" {% if user['theme']=='minimal' %}selected{% endif %}>مینیمال</option>
+                        <option value="professional" {% if user['theme']=='professional' %}selected{% endif %}>حرفه‌ای</option>
+                        <option value="store" {% if user['theme']=='store' %}selected{% endif %}>فروشگاهی</option>
+                        <option value="luxury" {% if user['theme']=='luxury' %}selected{% endif %}>لوکس (مشکی و طلایی)</option>
+                        <option value="neon" {% if user['theme']=='neon' %}selected{% endif %}>نئونی (سورمهای طلایی)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>انتخاب پس‌زمینه کارت</label>
+                    <select name="bg_style">
+                        <option value="bg-1" {% if user['bg_style']=='bg-1' %}selected{% endif %}>🌌 کهکشان بنفش</option>
+                        <option value="bg-2" {% if user['bg_style']=='bg-2' %}selected{% endif %}>🌊 اقیانوس آبی</option>
+                        <option value="bg-3" {% if user['bg_style']=='bg-3' %}selected{% endif %}>🌹 شب ارغوانی</option>
+                        <option value="bg-4" {% if user['bg_style']=='bg-4' %}selected{% endif %}>🌺 بنفش سلطنتی</option>
+                        <option value="bg-5" {% if user['bg_style']=='bg-5' %}selected{% endif %}>🌫️ دود خاکستری</option>
+                        <option value="bg-6" {% if user['bg_style']=='bg-6' %}selected{% endif %}>🌙 شب مهتابی</option>
+                        <option value="bg-7" {% if user['bg_style']=='bg-7' %}selected{% endif %}>🍇 تاکستان شب</option>
+                        <option value="bg-8" {% if user['bg_style']=='bg-8' %}selected{% endif %}>❄️ یخ آبی</option>
+                        <option value="bg-9" {% if user['bg_style']=='bg-9' %}selected{% endif %}>🌌 شب عمیق</option>
+                        <option value="bg-10" {% if user['bg_style']=='bg-10' %}selected{% endif %}>🕯️ سایه روشن</option>
+                        <option value="bg-11" {% if user['bg_style']=='bg-11' %}selected{% endif %}>🌙 مهتابی ۲</option>
+                        <option value="bg-12" {% if user['bg_style']=='bg-12' %}selected{% endif %}>🍇 شرابی</option>
+                        <option value="bg-13" {% if user['bg_style']=='bg-13' %}selected{% endif %}>🌊 اقیانوس عمیق</option>
+                        <option value="bg-14" {% if user['bg_style']=='bg-14' %}selected{% endif %}>🌺 بنفش شفق</option>
+                        <option value="bg-15" {% if user['bg_style']=='bg-15' %}selected{% endif %}>🌌 کهکشان آبی</option>
+                        <option value="bg-16" {% if user['bg_style']=='bg-16' %}selected{% endif %}>🌹 شب ارغوانی ۲</option>
+                        <option value="bg-17" {% if user['bg_style']=='bg-17' %}selected{% endif %}>🌙 شب مهتابی ۲</option>
+                        <option value="bg-18" {% if user['bg_style']=='bg-18' %}selected{% endif %}>🕯️ سایه روشن ۲</option>
+                        <option value="bg-19" {% if user['bg_style']=='bg-19' %}selected{% endif %}>🍇 شرابی ۲</option>
+                        <option value="bg-20" {% if user['bg_style']=='bg-20' %}selected{% endif %}>🌊 اقیانوس ۲</option>
+                    </select>
+                    <div class="bg-preview" style="background: var(--bg-preview, #1a1a2e);"></div>
+                </div>
+
+                <button type="submit" class="btn-save">💾 ذخیره تغییرات</button>
+            </form>
+            <a href="/dashboard" style="display: block; text-align: center; margin-top: 20px; color: #a0aec0;">بازگشت به داشبورد</a>
+        </div>
+    </div>
+    <script>
+        document.querySelector('select[name="bg_style"]').addEventListener('change', function() {
+            const bgMap = {
+                'bg-1': 'linear-gradient(145deg, #0f0c29, #302b63, #24243e)',
+                'bg-2': 'linear-gradient(145deg, #1a1a2e, #16213e, #0f3460)',
+                'bg-3': 'linear-gradient(145deg, #0a0a0a, #1a1a2e, #2d1b4e)',
+                'bg-4': 'linear-gradient(145deg, #1a1a2e, #2d1b4e, #4a1942)',
+                'bg-5': 'linear-gradient(145deg, #0a0a0a, #1a1a2e, #1a2a3a)',
+                'bg-6': 'linear-gradient(145deg, #1a1a2e, #0a1a2e, #0a0a1a)',
+                'bg-7': 'linear-gradient(145deg, #2d1b4e, #1a1a2e, #0f0c29)',
+                'bg-8': 'linear-gradient(145deg, #16213e, #1a1a2e, #0f3460)',
+                'bg-9': 'linear-gradient(145deg, #1a1a2e, #2d1b4e, #1a2a3a)',
+                'bg-10': 'linear-gradient(145deg, #0a0a0a, #1a1a2e, #16213e)',
+                'bg-11': 'linear-gradient(145deg, #1a1a2e, #0f0c29, #2d1b4e)',
+                'bg-12': 'linear-gradient(145deg, #0a0a0a, #2d1b4e, #1a1a2e)',
+                'bg-13': 'linear-gradient(145deg, #1a2a3a, #0a1a2e, #0a0a1a)',
+                'bg-14': 'linear-gradient(145deg, #2d1b4e, #1a2a3a, #0f0c29)',
+                'bg-15': 'linear-gradient(145deg, #0f3460, #16213e, #1a1a2e)',
+                'bg-16': 'linear-gradient(145deg, #1a1a2e, #0f3460, #2d1b4e)',
+                'bg-17': 'linear-gradient(145deg, #0a0a0a, #1a2a3a, #2d1b4e)',
+                'bg-18': 'linear-gradient(145deg, #1a1a2e, #0a0a1a, #0f0c29)',
+                'bg-19': 'linear-gradient(145deg, #2d1b4e, #0f3460, #1a1a2e)',
+                'bg-20': 'linear-gradient(145deg, #0a0a0a, #16213e, #1a2a3a)'
+            };
+            const preview = document.querySelector('.bg-preview');
+            preview.style.background = bgMap[this.value] || '#1a1a2e';
+        });
+    </script>
+</body>
+</html>
